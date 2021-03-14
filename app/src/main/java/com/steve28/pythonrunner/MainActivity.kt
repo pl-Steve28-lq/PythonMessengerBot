@@ -46,18 +46,6 @@ class MainActivity : AppCompatActivity() {
                         if msg == "Hello": replier.reply("World!")
             """.trimIndent()
         }
-        i.text = """
-            from android.widget import Toast
-            
-            class $clsName:
-                def __init__(self, act):
-                    self.activity = act
-            
-                def response(
-                    self, sender, msg, room, isGroupChat, replier, profileImage, packageName
-                ):
-                    Toast.makeText(self.activity, msg, Toast.LENGTH_LONG)
-        """.trimIndent()
 
         func = module["emptyFunction"]!!
 
