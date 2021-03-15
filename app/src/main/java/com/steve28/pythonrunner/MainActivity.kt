@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             func.call(sender, message, room, isGroupChat, Replier(bot, action), profileImage, packageName)
         }
 
-        if (bot.checkNotificationPermission())
+        if (!bot.checkNotificationPermission())
             bot.requestReadNotification()
 
         val c = f<Button>(R.id.compile)
