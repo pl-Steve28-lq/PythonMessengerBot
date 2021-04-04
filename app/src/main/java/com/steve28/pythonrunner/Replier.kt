@@ -7,6 +7,6 @@ class Replier(
     private val bot: KakaoBot,
     private val action: Notification.Action
 ) {
-    fun reply(msg: String) = bot.reply(action, msg)
-    fun replyRoom(room: String, msg: String) = bot.replyRoom(room, msg)
+    fun reply(msg: Any?) = bot.reply(action, msg.toString())
+    fun replyRoom(room: String, msg: Any?) = bot.replyRoom(room, msg.toString())
 }

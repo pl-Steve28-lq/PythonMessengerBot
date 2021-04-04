@@ -1,10 +1,12 @@
 package com.steve28.pythonrunner
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import java.lang.Exception
 
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             func.call(sender, message, room, isGroupChat, Replier(bot, action), profileImage, packageName)
         }
 
-        if (bot.checkNotificationPermission())
+        if (!bot.checkNotificationPermission())
             bot.requestReadNotification()
 
         val c = f<Button>(R.id.compile)
@@ -39,11 +41,13 @@ class MainActivity : AppCompatActivity() {
             languageRuleBook = PythonRuleBook()
             editable = true
             text = """
+                from numpy import array
+                
                 class $clsName:
                     def response(
                         self, sender, msg, room, isGroupChat, replier, profileImage, packageName
                     ):
-                        if msg == "Hello": replier.reply("World!")
+                        if msg == "Hello": replier.reply(str(array([1, 2, 3])))
             """.trimIndent()
         }
 
@@ -52,13 +56,13 @@ class MainActivity : AppCompatActivity() {
         c.setOnClickListener {
             try {
                 if (!power) {
-                    func = getResponse(i.text, clsName)!!
+                    func = getResponse(i.text, clsName) { s -> toast(this, s) }!!
                     snack(it, "Compile Success")
                 }
                 power = !power
                 bot.setPower(power)
                 c.text = if (power) "STOP" else "START"
-            } catch (e: Exception)  { snack(it, e.toString()) }
+            } catch (e: Exception)  { toast(this, e.toString()) }
         }
     }
 
@@ -69,15 +73,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun <T: View> f(id: Int): T = findViewById(id)
 
-    private fun getResponse(code: String, clsName: String)
-        = module["getResponse"]?.call(code, clsName, this)
+    private fun getResponse(code: String, clsName: String, onError: (String) -> Unit)
+        = module["getResponse"]?.call(code, clsName, this, onError)
 
 
     companion object {
         fun log(msg: Any?)
             = Log.d("TAG", msg.toString())
 
+        fun toast(ctx: Context, msg: Any?)
+            = Toast.makeText(ctx, msg.toString(), Toast.LENGTH_LONG).show()
+
         fun snack(view: View, msg: Any?)
-            = Snackbar.make(view, msg.toString(), Snackbar.LENGTH_LONG)
+            = Snackbar.make(view, msg.toString(), Snackbar.LENGTH_LONG).show()
     }
 }

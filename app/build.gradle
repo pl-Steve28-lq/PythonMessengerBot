@@ -20,6 +20,7 @@ android {
         python {
             pip {
                 install "requests"
+                install "numpy"
             }
         }
 

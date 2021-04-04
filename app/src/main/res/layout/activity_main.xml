@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layout"
     tools:context=".MainActivity">
 
     <de.markusressel.kodeeditor.library.view.CodeEditorLayout
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:ke_divider_enabled="true"
-        app:ke_editor_backgroundColor="@color/white"
+        app:ke_editor_backgroundColor="@color/black"
         app:ke_editor_maxZoom="10.0"
         app:ke_lineNumbers_backgroundColor="@color/black"
         app:ke_lineNumbers_textColor="@color/white" />
